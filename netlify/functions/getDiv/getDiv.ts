@@ -1,10 +1,8 @@
 import { Handler } from '@netlify/functions'
 
 export const handler: Handler = async (event, context) => {
-  console.log('queryStringParameters', event.queryStringParameters)
-  console.log(context);
-
-  const { name = 'stranger' } = event.queryStringParameters
+  
+  const { name = 'stranger' } = event.body
 
   return {
     statusCode: 200,
