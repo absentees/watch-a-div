@@ -5,8 +5,17 @@ import { ref } from 'vue'
 
 const url = ref('')
 const selector = ref('')
+const result = ref('')
 const preview = () => {
-  console.log('preview', url.value, selector.value)
+  // Send the url to the netlify function getDiv
+  // and get the html of the div
+  // then display it in the preview
+
+  fetch('/.netlify/functions/getDiv', {
+    method: 'GET',
+    body: JSON.stringify({
+      name: "test"
+    })})
 }
 
 </script>
@@ -27,6 +36,10 @@ const preview = () => {
     </fieldset>
 
     <button @click="preview">Preview</button>
+
+    <div v-if="result">
+      {{ result }}      
+    </div>
 
   </div>
 </template>
