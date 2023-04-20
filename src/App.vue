@@ -1,22 +1,32 @@
+ 
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-
 import { ref } from 'vue'
 
+// ref() creates a reactive variable
 const url = ref('')
 const selector = ref('')
 const result = ref('')
-const preview = () => {
-  // Send the url to the netlify function getDiv
-  // and get the html of the div
-  // then display it in the preview
 
+// preview() is called when the user clicks the button
+const preview = () => {
+  // fetch() makes an HTTP request
   fetch('/.netlify/functions/getDiv', {
-    method: 'GET',
+    method: 'POST',
     body: JSON.stringify({
-      name: "test"
-    })})
+      url: url.value,
+      selector: selector.value
+    })
+  })
+    // response.json() parses the JSON response
+    .then(response => response.json())
+    // data is the parsed response
+    .then(data => {
+      result.value = data
+    })
 }
+
+  // Get request to getDiv with query string parameters
+  fetch('/.netlify/functions/getDiv?url=' + url.value + '&selector=' + selector.value)
 
 </script>
 
@@ -38,7 +48,7 @@ const preview = () => {
     <button @click="preview">Preview</button>
 
     <div v-if="result">
-      {{ result }}      
+      {{ result }}
     </div>
 
   </div>
