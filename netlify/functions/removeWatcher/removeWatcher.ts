@@ -1,18 +1,12 @@
 import { Handler } from '@netlify/functions'
 
 export const handler: Handler = async (event, context) => {
-  
-  // Extract event.body into an object
-  const { url, selector } = JSON.parse(event.body);
-
-  console.log(event.body);
-
+  const { name = 'stranger' } = event.queryStringParameters
 
   return {
     statusCode: 200,
     body: JSON.stringify({
-      url,
-      selector
+      message: `Hello, ${name}!`,
     }),
   }
 }

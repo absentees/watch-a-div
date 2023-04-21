@@ -6,6 +6,7 @@ import { ref } from 'vue'
 const url = ref('')
 const selector = ref('')
 const result = ref('')
+const email = ref('')
 
 // preview() is called when the user clicks the button
 const preview = () => {
@@ -25,15 +26,34 @@ const preview = () => {
     })
 }
 
-  // Get request to getDiv with query string parameters
-  fetch('/.netlify/functions/getDiv?url=' + url.value + '&selector=' + selector.value)
-
+const sendEmail = () => {
+  fetch('/.netlify/functions/newWatcher', {
+    method: 'POST',
+    body: JSON.stringify({
+      url: url.value,
+      selector: selector.value,
+      email: email.value
+    })
+  })
+    // response.json() parses the JSON response
+    .then(response => response.json())
+    // data is the parsed response
+    .then(data => {
+      result.value = data
+    })
+}
 </script>
 
 <template>
   <h1>watch-a-div</h1>
 
   <div class="form">
+
+    
+    <fieldset>
+      <label for="email">Email:</label>
+      <input name="email" type="email" v-model="email" />
+    </fieldset>
 
     <fieldset>
       <label for="url">URL:</label>
@@ -46,6 +66,8 @@ const preview = () => {
     </fieldset>
 
     <button @click="preview">Preview</button>
+    
+    <button @click="sendEmail">Send email</button>
 
     <div v-if="result">
       {{ result }}

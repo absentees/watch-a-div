@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@netlify/emails": "^1.1.0",
     "@netlify/functions": "^1.4.0",
+    "@supabase/supabase-js": "^2.21.0",
     "@types/node": "^14.18.42",
     "vue": "^3.2.47"
   },
