@@ -4,4 +4,4 @@
   command = "yarn build"
   publish = "dist"
 [functions]
-  external_node_modules = ["yargs"]
+  external_node_modules = ["emitter"]

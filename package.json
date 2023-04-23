@@ -13,10 +13,10 @@
     "@netlify/functions": "^1.4.0",
     "@supabase/supabase-js": "^2.21.0",
     "@types/node": "^14.18.42",
-    "chrome-aws-lambda": "^10.1.0",
     "dotenv": "^16.0.3",
-    "puppeteer-core": "^19.10.1",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "puppeteer-core": "^18.2.1",
+    "@sparticuz/chromium": "^106.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
