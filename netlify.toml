@@ -4,4 +4,4 @@
   command = "yarn build"
   publish = "dist"
 [functions]
-  external_node_modules = ["emitter"]
+  node_bundler = "esbuild"
