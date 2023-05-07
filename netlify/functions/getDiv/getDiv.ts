@@ -10,11 +10,10 @@ export const handler: Handler = async (event, context) => {
 
  
   const browser = await puppeteer.launch({
+    product: 'chrome',
     args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath,
-    headless: chromium.true,
-    ignoreHTTPSErrors: true,
+    executablePath: await chromium.executablePath,
+    headless: chromium.headless,
   });
 
   const page = await browser.newPage();
