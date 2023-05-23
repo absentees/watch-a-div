@@ -11,11 +11,11 @@
   "dependencies": {
     "@netlify/emails": "^1.1.0",
     "@netlify/functions": "^1.4.0",
-    "@sparticuz/chromium": "^106.0.2",
+    "@sparticuz/chromium": "92.0.0",
     "@supabase/supabase-js": "^2.21.0",
     "@types/node": "^14.18.42",
     "dotenv": "^16.0.3",
-    "puppeteer-core": "^18.2.1",
+    "puppeteer-core": "^10.1.0",
     "vue": "^3.2.47"
   },
   "devDependencies": {

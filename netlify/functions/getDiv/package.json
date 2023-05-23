@@ -1,8 +1,0 @@
-{
-  "name": "getdiv",
-  "version": "1.0.0",
-  "main": "getDiv.js",
-  "license": "MIT",
-  "puppeteer-core": "^18.2.1",
-  "@sparticuz/chromium": "^106.0.2"
-}

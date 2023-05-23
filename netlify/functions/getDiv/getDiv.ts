@@ -8,27 +8,40 @@ export const handler: Handler = async (event, context) => {
   console.log(`Looking for ${selector} in ${url}`);
   let value = null;
 
- 
+
   const browser = await puppeteer.launch({
-    product: 'chrome',
     args: chromium.args,
-    executablePath: await chromium.executablePath,
-    headless: chromium.headless,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath,
+    headless: chromium.true,
+    ignoreHTTPSErrors: true,
   });
 
-  const page = await browser.newPage();
-  await page.goto(url);
-  await page.waitForSelector(selector);
-  value = await page.$eval(selector, (el: any) => el.innerText);
-  await browser.close();
+  try {
+    const page = await browser.newPage();
+    await page.goto(url);
+    await page.waitForSelector(selector);
+    value = await page.$eval(selector, (el: any) => el.innerText);
+    await browser.close();
+
+    // Return the value
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        value,
+      })
+    }
 
 
-  // Return the value
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      value,
-    }),
+  } catch (error) {
+    await browser.close();
+
+    console.log(error);
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Failed' }),
+    }
   }
 
 }
