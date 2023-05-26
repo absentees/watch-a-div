@@ -7,6 +7,7 @@ export const handler = async (event, context) => {
   // console.log(`Looking for ${selector} in ${url}`);
   let value = null;
 
+  
 
   const browser = await puppeteer.launch({
     args: chromium.args,
