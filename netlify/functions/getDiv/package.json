@@ -1,5 +1,5 @@
 {
-	"name": "get-div",
+	"name": "getDiv",
 	"version": "1.0.0",
 	"main": "getDiv.js",
 	"license": "MIT",
