@@ -1,5 +1,7 @@
 [[plugins]]
   package = "@netlify/plugin-emails"
+[[plugins]]
+  package = "@netlify/plugin-functions-install-core"
 [build]
   command = "yarn build"
   publish = "dist"
