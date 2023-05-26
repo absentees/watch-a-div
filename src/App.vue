@@ -24,7 +24,7 @@ const preview = () => {
   //   .then(data => {
   //     result.value = data
   //   })
-  fetch('/.netlify/functions/getDiv', {
+  fetch('https://puppeteer-function.netlify.app/.netlify/functions/getDiv', {
     method: 'POST',
     body: JSON.stringify({
       url: 'https://apple.com',
