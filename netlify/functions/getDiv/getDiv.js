@@ -1,11 +1,10 @@
-import { Handler } from '@netlify/functions'
 const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
 
 export const handler = async (event, context) => {
   // Extract event.body into an object
-  const { url, selector } = JSON.parse(event.body);
-  console.log(`Looking for ${selector} in ${url}`);
+  // const { url, selector } = JSON.parse(event.body);
+  // console.log(`Looking for ${selector} in ${url}`);
   let value = null;
 
 
