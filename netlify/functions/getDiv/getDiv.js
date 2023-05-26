@@ -2,7 +2,7 @@ import { Handler } from '@netlify/functions'
 const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
 
-export const handler: Handler = async (event, context) => {
+export const handler = async (event, context) => {
   // Extract event.body into an object
   const { url, selector } = JSON.parse(event.body);
   console.log(`Looking for ${selector} in ${url}`);
@@ -21,7 +21,7 @@ export const handler: Handler = async (event, context) => {
     const page = await browser.newPage();
     await page.goto(url);
     await page.waitForSelector(selector);
-    value = await page.$eval(selector, (el: any) => el.innerText);
+    value = await page.$eval(selector, el => el.innerText);
     await browser.close();
 
     // Return the value
