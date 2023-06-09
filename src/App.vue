@@ -1,4 +1,3 @@
- 
 <script setup lang="ts">
 import { ref } from 'vue'
 
@@ -11,24 +10,11 @@ const email = ref('')
 // preview() is called when the user clicks the button
 const preview = () => {
   // fetch() makes an HTTP request
-  // fetch('/.netlify/functions/getDiv', {
-  //   method: 'POST',
-  //   body: JSON.stringify({
-  //     url: url.value,
-  //     selector: selector.value
-  //   })
-  // })
-  //   // response.json() parses the JSON response
-  //   .then(response => response.json())
-  //   // data is the parsed response
-  //   .then(data => {
-  //     result.value = data
-  //   })
-  fetch('https://puppeteer-function.netlify.app/.netlify/functions/getDiv', {
+  fetch('/.netlify/functions/getDiv', {
     method: 'POST',
     body: JSON.stringify({
-      url: 'https://apple.com',
-      selector: 'h1'
+      url: url.value,
+      selector: selector.value
     })
   })
     // response.json() parses the JSON response

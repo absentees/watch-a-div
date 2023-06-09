@@ -1,20 +1,27 @@
 const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium");
+const dotenv = require('dotenv').config();
 
-export const handler = async (event, context) => {
+exports.handler = async (event, context) => {
   // Extract event.body into an object
-  // const { url, selector } = JSON.parse(event.body);
-  // console.log(`Looking for ${selector} in ${url}`);
+  const { url, selector } = JSON.parse(event.body);
+  console.log(`Looking for ${selector} in ${url}`);
+
   let value = null;
 
+  // Optional: If you'd like to use the legacy headless mode. "new" is the default.
+  chromium.setHeadlessMode = "new";
 
+  //
   const browser = await puppeteer.launch({
-    args: chromium.args,
+    args: process.env.IS_LOCAL ? puppeteer.defaultArgs() : chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath,
-    headless: chromium.true,
-    ignoreHTTPSErrors: true,
+    executablePath: process.env.IS_LOCAL
+      ? process.env.CHROME_EXECUTABLE_PATH
+      : await chromium.executablePath(),
+    headless: process.env.IS_LOCAL ? false : chromium.headless
   });
+
 
   try {
     const page = await browser.newPage();
