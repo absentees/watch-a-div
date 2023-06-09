@@ -2,6 +2,9 @@ import { Handler } from '@netlify/functions'
 import { sendEmail } from "@netlify/emails"
 import { createClient } from '@supabase/supabase-js'
 
+const supabaseUrl = 'https://flzspbfkoqkewbrerqze.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY as string
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 async function createNewUser(email) {
   const { data, error } = await supabase
@@ -61,9 +64,6 @@ async function checkIfUserExists(email) {
 // with a link to the watcher
 // return the watcher ID
 export const handler: Handler = async (event, context) => {
-  const supabaseUrl = 'https://flzspbfkoqkewbrerqze.supabase.co'
-  const supabaseKey = process.env.SUPABASE_KEY as string
-  const supabase = createClient(supabaseUrl, supabaseKey)
   let userID = null;
 
   const { url, selector, email } = JSON.parse(event.body);

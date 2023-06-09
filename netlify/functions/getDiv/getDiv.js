@@ -12,7 +12,7 @@ exports.handler = async (event, context) => {
   // Optional: If you'd like to use the legacy headless mode. "new" is the default.
   chromium.setHeadlessMode = "new";
 
-  //
+  // Launch the browser
   const browser = await puppeteer.launch({
     args: process.env.IS_LOCAL ? puppeteer.defaultArgs() : chromium.args,
     defaultViewport: chromium.defaultViewport,
@@ -21,7 +21,6 @@ exports.handler = async (event, context) => {
       : await chromium.executablePath(),
     headless: process.env.IS_LOCAL ? false : chromium.headless
   });
-
 
   try {
     const page = await browser.newPage();
