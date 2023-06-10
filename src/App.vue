@@ -24,7 +24,7 @@ const preview = async () => {
   })
 
   const data = await response.json();
-  result.value = data;
+  result.value = data.value;
 
 }
 
@@ -35,7 +35,7 @@ const sendEmail = async () => {
       url: url.value,
       selector: selector.value,
       email: email.value,
-      div: result.value.value
+      div: result.value
     })
   })
     // response.json() parses the JSON response
@@ -68,11 +68,7 @@ const sendEmail = async () => {
       <input type="text" name="selector" v-model="selector" />
     </fieldset>
 
-    <button @click="preview">Preview</button>
-
-    <button @click="sendEmail">Send email</button>
-
-    <button @click="getDivSend">Get div and send email</button>
+    <button @click="getDivSend">Watch div</button>
 
     <div v-if="result">
       {{ result }}
