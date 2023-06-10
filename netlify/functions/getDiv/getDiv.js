@@ -24,7 +24,19 @@ exports.handler = async (event, context) => {
 
   try {
     const page = await browser.newPage();
-    await page.goto(url);
+    
+    // Go to url, block images and css
+    await page.setRequestInterception(true);
+    page.on('request', (req) => {
+      if(req.resourceType() === 'image' || req.resourceType() === 'stylesheet'){
+        req.abort();
+      }
+      else {
+        req.continue();
+      }
+    });
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    
     await page.waitForSelector(selector);
     value = await page.$eval(selector, el => el.innerText);
     await browser.close();

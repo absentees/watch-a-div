@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 
 // ref() creates a reactive variable
-const url = ref('')
-const selector = ref('')
+const url = ref('https://apple.com')
+const selector = ref('h1')
 const result = ref('')
 const email = ref('')
 
