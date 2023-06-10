@@ -8,8 +8,14 @@ const result = ref('')
 const email = ref('')
 
 const getDivSend = async () => {
-  await preview();  
-  await sendEmail();
+  try {
+    await preview();
+    await sendEmail();
+  } catch (error) {
+    console.error(error);
+    result.value = "Something went wrong :(";
+  }
+
 }
 
 // preview() is called when the user clicks the button
