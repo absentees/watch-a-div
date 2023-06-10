@@ -2,10 +2,10 @@
 import { ref } from 'vue'
 
 // ref() creates a reactive variable
-const url = ref('https://apple.com')
-const selector = ref('h1')
+const url = ref('')
+const selector = ref('')
 const result = ref('')
-const email = ref('djlethal109@gmail.com')
+const email = ref('')
 
 const getDivSend = async () => {
   await preview();  
