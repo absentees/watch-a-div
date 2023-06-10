@@ -7,23 +7,15 @@ const supabaseKey = process.env.SUPABASE_KEY as string
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 async function createNewUser(email) {
-  const { data, error } = await supabase
+  console.log("Creating new user");
+
+  const { data } = await supabase
     .from('users')
     .insert([
       { email: email },
     ])
     .select()
 
-  // Handle error
-  if (error) {
-    console.log(error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: `Error creating user`,
-      }),
-    }
-  }
 
   if (data.length > 0) {
     return data[0].id;
@@ -36,25 +28,18 @@ async function createNewUser(email) {
 async function checkIfUserExists(email) {
   // Create a new user in the supabase database table "users"
   // return the user ID
+  console.log("Checking if user exists");
 
   // Check if user already exists
-  const { data: data1, error: error1 } = await supabase
+  const { data } = await supabase
     .from('users')
     .select('*')
     .eq('email', email)
 
-  // Handle error
-  if (error1) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        message: `Error checking if user exists`,
-      }),
-    }
-  }
+  console.log(data);
 
   // If user exists, return the user ID
-  if (data1.length > 0) return data1[0].id;
+  if (data.length > 0) return data[0].id;
 
   return null;
 }
@@ -64,28 +49,64 @@ async function checkIfUserExists(email) {
 // with a link to the watcher
 // return the watcher ID
 export const handler: Handler = async (event, context) => {
-  let userID = null;
+  let userID: number | null = null;
 
-  const { url, selector, email } = JSON.parse(event.body);
+  const { url, selector, email, div } = JSON.parse(event.body);
   console.log(event.body);
 
-  // Check if user already exists
-  userID = checkIfUserExists(email);
 
-  // If user doesn't exist, create a new user
-  if (userID == null) userID = createNewUser(email);
+  try {
+    userID = await checkIfUserExists(email);
 
+    if (userID == null) userID = await createNewUser(email);
 
-  // Create a new row in watchers table
-  const { data, error } = await supabase
-    .from('watchers')
-    .insert([
-      { url: url, selector: selector, userId: userID },
-    ])
-    .select()
+  } catch (error) {
+    if (error) {
+      console.log(error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          message: `Error creating user`,
+        }),
+      }
+    }
+  }
 
-  // Handle error
-  if (error) {
+  try {
+    // Create a new row in watchers table
+    const { data } = await supabase
+      .from('watchers')
+      .insert([
+        { url: url, selector: selector, userId: userID },
+      ])
+      .select()
+
+    console.log("Sending email");
+
+    await sendEmail({
+      from: process.env.NETLIFY_EMAILS_SENDFROM as string,
+      to: email,
+      subject: `new watcher created for ${url}`,
+      template: "newWatcher",
+      parameters: {
+        url: url,
+        selector: selector,
+        div: div,
+        sessionId: data[0].sessionId
+      },
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: `Email sent`,
+        watcherID: data[0].id,
+        userID: userID,
+        div: div
+      }),
+    }
+  } catch (error) {
+    // Handle error
     console.log(error);
     return {
       statusCode: 500,
@@ -93,31 +114,7 @@ export const handler: Handler = async (event, context) => {
         message: `Error creating watcher`,
       }),
     }
-  }
 
-  // Send email to user with link to watcher
-  console.log("Sending email");
-
-
-  await sendEmail({
-    from: "",
-    to: email,
-    subject: `new watcher created for ${url}`,
-    template: "newWatcher",
-    parameters: {
-      url: url,
-      selector: selector,
-      sessionId: data[0].sessionId
-    },
-  });
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: `Email sent`,
-      watcherID: data[0].id,
-      userID: userID
-    }),
   }
 }
 

@@ -2,36 +2,40 @@
 import { ref } from 'vue'
 
 // ref() creates a reactive variable
-const url = ref('')
-const selector = ref('')
+const url = ref('https://apple.com')
+const selector = ref('h1')
 const result = ref('')
-const email = ref('')
+const email = ref('djlethal109@gmail.com')
+
+const getDivSend = async () => {
+  await preview();  
+  await sendEmail();
+}
 
 // preview() is called when the user clicks the button
-const preview = () => {
+const preview = async () => {
   // fetch() makes an HTTP request
-  fetch('/.netlify/functions/getDiv', {
+  const response = await fetch('/.netlify/functions/getDiv', {
     method: 'POST',
     body: JSON.stringify({
       url: url.value,
       selector: selector.value
     })
   })
-    // response.json() parses the JSON response
-    .then(response => response.json())
-    // data is the parsed response
-    .then(data => {
-      result.value = data
-    })
+
+  const data = await response.json();
+  result.value = data;
+
 }
 
-const sendEmail = () => {
+const sendEmail = async () => {
   fetch('/.netlify/functions/newWatcher', {
     method: 'POST',
     body: JSON.stringify({
       url: url.value,
       selector: selector.value,
-      email: email.value
+      email: email.value,
+      div: result.value.value
     })
   })
     // response.json() parses the JSON response
@@ -67,6 +71,8 @@ const sendEmail = () => {
     <button @click="preview">Preview</button>
 
     <button @click="sendEmail">Send email</button>
+
+    <button @click="getDivSend">Get div and send email</button>
 
     <div v-if="result">
       {{ result }}

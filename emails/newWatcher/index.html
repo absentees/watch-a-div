@@ -10,9 +10,10 @@
 	<h1>new watcher for {{url}} created</h1>
 	<div>
 		<p>Watching the div: {{selector}}</p>
+		<p>It's current value is: {{div}}</p>
 	</div>
 	<p>You will receive an email when this changes.</p>
-	<a style="color:red" href="{{sessionId}}">Remove watcher</a>
+	<a style="color:red" href="https://watch-a-div.netlify.app/.netlify/functions/removeWatcher?id={{sessionId}}">Remove watcher</a>
 	<p>Thanks,</p>
 	<p>Team watch-a-div</p>
 
